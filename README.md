@@ -1,7 +1,6 @@
 # PSL Certificate Builder
 During my traching experience, aside from Postman Workshops (API 101: API Fundamentals, API 102: Building Workflows with APIs, API 103: Building Applications with APIs, etc.) I have been giving certificates to the students who have completed the workshop. I have been using Canva to create the certificates and then sending them to the students. This process was time-consuming and I had to create a new certificate for every student. So, I thought of creating a script that will generate the certificates for me and send them to the students.
 
----
 
 ## Features
 - [x] Generate Certificate
@@ -10,7 +9,6 @@ During my traching experience, aside from Postman Workshops (API 101: API Fundam
 - [x] Allows to choose between Postman Student Leader and Postman Student Expert
 - [x] Uses json format to store the data
 
----
 
 ## How to setup
 
@@ -43,7 +41,6 @@ Create **App Password** for your email account and use that password in the `EMA
 10. Enter the event name
 11. The certificates will be generated and sent to the email addresses mentioned in the `data.json` file
 
----
 
 ## Contibution
 Feel free to contribute to this project and help me to make it better. You can also suggest new features which you think should be added to this project.

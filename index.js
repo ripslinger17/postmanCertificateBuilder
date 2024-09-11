@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const data = require('./data.json');
 const inquirer = require('inquirer').default;
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -27,6 +28,14 @@ async function getUserInput() {
 
     return answers;
 }
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // You can use other email services as well (e.g., 'hotmail', 'yahoo')
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
 const imageBase64 = fs.readFileSync(path.resolve(__dirname, './images/postman.svg'), 'base64');
 
@@ -226,6 +235,28 @@ async function createPDF(participantData, index, userInput) {
     const userInput = await getUserInput();
 
     for (let i = 0; i < data.length; i++) {
-        await createPDF(data[i], i, userInput);
+        const pdfPath = await createPDF(data[i], i, userInput);
+        
+        const pathToPDF = path.resolve(__dirname, `certificates/${data[i].name}.pdf`);
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: data[i].email,
+            subject: `Certificate of Participation - ${userInput.course}`,
+            text: `Hello ${data[i].name},\n\nPlease find your certificate for attending ${userInput.course} in attachment.`,
+            attachments: [
+                {
+                    filename: `${data[i].name}.pdf`,
+                    path: pathToPDF,
+                    contentType: 'application/pdf'
+                }
+            ]
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.log('Error: ', error);
+            }
+            console.log(`Email sent to ${data[i].name}: `, info.response);
+        });
     }
 })();

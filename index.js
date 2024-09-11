@@ -30,7 +30,6 @@ async function getUserInput() {
 
 const imageBase64 = fs.readFileSync(path.resolve(__dirname, './images/postman.svg'), 'base64');
 
-// Define an async function outside the loop
 async function createPDF(participantData, index, userInput) {
     const htmlContent = `<!DOCTYPE html>
 <html lang="en">
@@ -52,7 +51,7 @@ async function createPDF(participantData, index, userInput) {
         width: 800px;
         height: 500px;
         border: 2px solid black;
-        margin: 125px auto;
+        margin: 0 auto;
         text-align: center;
         position: relative;
       }
@@ -206,16 +205,14 @@ async function createPDF(participantData, index, userInput) {
   </body>
 </html>`;
 
-    // Launch Puppeteer and generate the PDF
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(htmlContent);
     
-    // Generate PDF with unique file name for each participant
     await page.pdf({
-        path: `certificates/output${index + 1}.pdf`,  // Save each PDF with a unique name
-        format: 'A4',
-        landscape: true,
+        path: `certificates/${participantData.name}.pdf`,
+        width: '216mm',
+        height: '137.5mm',
         printBackground: true
     });
 
@@ -224,11 +221,11 @@ async function createPDF(participantData, index, userInput) {
     console.log(`PDF ${index + 1} created successfully!`);
 }
 
-// Main function to handle the process
+
 (async () => {
-    const userInput = await getUserInput(); // Get user input
+    const userInput = await getUserInput();
 
     for (let i = 0; i < data.length; i++) {
-        await createPDF(data[i], i, userInput); // Pass user input to createPDF
+        await createPDF(data[i], i, userInput);
     }
 })();

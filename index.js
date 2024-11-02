@@ -44,6 +44,7 @@ async function getUserInput() {
     return answers;
 }
 
+// Use this code block while using Mac OS or Linux
 const transporter = nodemailer.createTransport({
     service: 'gmail', // You can use other email services as well (e.g., 'hotmail', 'yahoo')
     auth: {
@@ -51,6 +52,18 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 });
+
+// Uncomment this code block while using Windows OS
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail', // You can use other email services as well (e.g., 'hotmail', 'yahoo')
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS
+//     }
+//     tls: {
+//       rejectUnauthorized: false // Note: Use with caution and only in development environment
+//     }
+// });
 
 const imageBase64 = fs.readFileSync(path.resolve(__dirname, './images/postman.svg'), 'base64');
 
